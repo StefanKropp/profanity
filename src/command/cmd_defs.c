@@ -2561,6 +2561,23 @@ static struct cmd_t command_defs[] = {
       CMD_NOEXAMPLES
     },
 
+// ----------------------------------------------------------------------------
+// Editor command - call e.g. vim to compose messages
+// ----------------------------------------------------------------------------
+    { "/editor",
+      parse_args, 0, 0, NULL,
+      CMD_NOSUBFUNCS
+      CMD_MAINFUNC(cmd_editor)
+      CMD_TAGS(
+              CMD_TAG_CHAT)
+      CMD_SYN(
+              "/editor")
+      CMD_DESC(
+              "Call editor")
+      CMD_NOARGS
+      CMD_NOEXAMPLES
+    },
+
     // NEXT-COMMAND (search helper)
 };
 
