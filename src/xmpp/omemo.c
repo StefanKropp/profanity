@@ -120,7 +120,12 @@ omemo_bundle_publish(gboolean first)
     g_list_free(ids);
 
     if (connection_supports(XMPP_FEATURE_PUBSUB_PUBLISH_OPTIONS)) {
-        stanza_attach_publish_options(ctx, iq, "pubsub#access_model", "open");
+        // stanza_attach_publish_options(ctx, iq, "pubsub#access_model", "open");
+        stanza_attach_publish_options_va(ctx, iq,
+                4, // 2 * number of key-value pairs
+                // "pubsub#max_items", "max",
+                "pubsub#persist_items", "true",
+                "pubsub#access_model", "open");
     }
 
     iq_id_handler_add(id, _omemo_bundle_publish_result, NULL, GINT_TO_POINTER(first));
@@ -563,6 +568,12 @@ _omemo_bundle_publish_configure(xmpp_stanza_t* const stanza, void* const userdat
         return 0;
     }
     form_set_value(form, tag, "open");
+    // tag = g_hash_table_lookup(form->var_to_tag, "pubsub#max_items");
+    // if (!tag) {
+    //     log_error("[OMEMO] cannot configure bundle to max_items=max");
+    //     return 0;
+    // }
+    // form_set_value(form, tag, "max");
 
     xmpp_ctx_t* const ctx = connection_get_ctx();
     Jid* jid = jid_create(connection_get_fulljid());
